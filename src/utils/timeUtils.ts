@@ -42,7 +42,7 @@ export const generateRandomTimes = (
 
     const times = new Set<number>()
 
-    while (times.size < frequency) {
+    while (times.size < cappedFrequency) {
         const randomMinute = Math.floor(Math.random() * range ) + startMinutes
         times.add(randomMinute)
 

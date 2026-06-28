@@ -57,7 +57,7 @@ const CreateReminderScreen = () => {
         }
         await setReminder(newReminder)
         await scheduleReminder(newReminder)
-        navigation.goBack()
+        navigation.navigate('Home', {testReminder: newReminder});
     }
 
     {/* Day Selector */}
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   // ── Layout ──────────────────────────────
   screen: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#242436',
   },
   container: {
     padding: 20,

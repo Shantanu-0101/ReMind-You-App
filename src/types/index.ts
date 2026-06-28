@@ -12,7 +12,7 @@ export type Reminder = {
 }
 
 export type RootStackParamList = {
-  Home: undefined
+  Home: {testRemider?: Reminder} | undefined;
   Create: undefined
   Edit: { reminderId: string }
 }

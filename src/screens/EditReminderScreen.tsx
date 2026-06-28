@@ -14,7 +14,7 @@ import { getReminders, updateReminder, deleteReminder } from '../services/Storag
 import { cancelReminder } from '../services/NotificationService'
 
 
-const CreateReminderScreen = () => {
+const EditReminderScreen = () => {
 
     const [text, setText] = useState('')
     const [startTime, setStartTime] = useState('08:00')
@@ -260,14 +260,14 @@ const CreateReminderScreen = () => {
   )
 }
 
-export default CreateReminderScreen
+export default EditReminderScreen
 
 const styles = StyleSheet.create({
 
   // ── Layout ──────────────────────────────
   screen: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#242436',
   },
   container: {
     padding: 20,
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
   },
   input: {
-    backgroundColor: '#12122a',
+    backgroundColor: '#242436',
     borderWidth: 1,
     borderColor: '#fff',
     borderRadius: 10,

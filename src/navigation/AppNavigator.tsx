@@ -20,8 +20,9 @@ export default function AppNavigator() {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    title: 'Home',
+                    title: 'Reminders',
                     headerShown: false
+                    
                 }} 
                 />
                     

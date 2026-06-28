@@ -14,6 +14,8 @@ import { RootStackParamList } from '../types'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Alert } from 'react-native'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { useRoute } from '@react-navigation/native';
+import notifee from '@notifee/react-native';
 
 
 const handleFeedback = () => {
@@ -40,6 +42,52 @@ export default function HomeScreen() {
     }, [])
   )
 
+  const getChannelID = (sound:boolean, vibration:boolean) => {
+        if (sound && vibration) return 'reminders-sound-vibe';
+        if (sound && !vibration) return 'reminders-sound-only';
+        if (!sound && vibration) return 'reminders-vibe-only';
+        return 'reminders-silent';
+    };
+
+  const route = useRoute();
+
+  const params = route.params as {testReminder?: Reminder} | undefined;
+
+  React.useEffect(() => {
+    if (params?.testReminder) {
+      const reminder = params.testReminder;
+
+      // kill parameter to not show alert again
+      navigation.setParams({testReminder: undefined} as any);
+
+      Alert.alert(
+        'Test Notification',
+        'Would you like to send a test notifaction for this reminder?',
+        [
+          {
+            text:'Cancel',
+            style:'cancel'
+          },
+          {
+            text:'Send Test Notification',
+            onPress: async() => {
+
+              const channelId = getChannelID(reminder.sound, reminder.vibration);
+
+              await notifee.displayNotification({
+                title: 'Test Reminder',
+                body: reminder.text,
+                android: {
+                  channelId: channelId,
+                },
+              });
+            },
+          },
+        ],
+      );
+    }
+  }, [params?.testReminder]);
+
   const renderItem = ({ item }: { item: Reminder }) => (
     <View style={styles.row}>
       <Text style={styles.rowText}>{item.text}</Text>
@@ -54,7 +102,9 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <StatusBar barStyle="light-content" backgroundColor="#1a1a2e" />
+       
 
       {/* Title */}
       <View style={styles.titleRow}>
@@ -110,9 +160,10 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   justifyContent: 'space-between',
   paddingHorizontal: 20,
-  paddingVertical: 16,
-  borderBottomWidth: 1,
-  borderBottomColor: '#2a2a3e',
+  paddingVertical: 1,
+  // borderBottomWidth: 1,
+  // borderBottomColor: '#1a1932',
+  backgroundColor:'#1a1932'
 },
 
   title: {
@@ -123,7 +174,6 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     borderBottomWidth: 1,
     borderBottomColor: '#242436',
-    backgroundColor: '#242436',
   },
   list: {
     flex: 1,

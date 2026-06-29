@@ -192,12 +192,15 @@ const EditReminderScreen = () => {
         {/* Frequency Bar */}
           <Text style={styles.label}>Selected Frequency: {frequency} </Text>
           <Slider
-            style={{ width: 300, height: 40 }}
+            style={{ height: 40 }}
             minimumValue={5}
             maximumValue={100}
             step={1}
             value={frequency}
             onValueChange={setFrequency}
+            minimumTrackTintColor='#5B4FE9'
+            maximumTrackTintColor='#fff'
+            thumbTintColor='#5B4FE9'
           />
 
         {/* Active Days */}
@@ -292,11 +295,10 @@ const styles = StyleSheet.create({
 
   // ── Labels & Inputs ──────────────────────
   label: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#fff',
     marginTop: 8,
     marginBottom: 8,
-    textTransform: 'uppercase',
     letterSpacing: 0.8,
   },
   input: {
@@ -361,6 +363,7 @@ const styles = StyleSheet.create({
   slider: {
     width: '100%',
     height: 40,
+    marginVertical:12
   },
 
   // ── Day Selector ─────────────────────────

@@ -56,8 +56,8 @@ const CreateReminderScreen = () => {
             notificationIds: [],
         }
         await setReminder(newReminder)
-        await scheduleReminder(newReminder)
-        navigation.navigate('Home', {testReminder: newReminder});
+        await scheduleReminder(newReminder);
+        (navigation.navigate as any)('Home', {testReminder: newReminder});
     }
 
     {/* Day Selector */}
@@ -138,7 +138,7 @@ const CreateReminderScreen = () => {
 
     {/* Text */}
     <View style={styles.container}>
-        <Text style={styles.label}>Reminder Text</Text>
+        <Text style={styles.label}>Reminder Text:</Text>
         <TextInput
             style={styles.input}
             maxLength={100}
@@ -152,14 +152,17 @@ const CreateReminderScreen = () => {
     <TimeRow label="Ending at:"   time={endTime}   setTime={setEndTime} />
 
     {/* Frequency Bar */}
-      <Text style={styles.label}>Selected Frequency: {frequency} </Text>
+      <Text style={styles.label}>Reminders per Day: {frequency} </Text>
       <Slider
-        style={{ width: 300, height: 40 }}
+        style={{ height: 44 }}
         minimumValue={5}
         maximumValue={100}
         step={1}
         value={frequency}
         onValueChange={setFrequency}
+        minimumTrackTintColor='#5B4FE9'
+        maximumTrackTintColor='#fff'
+        thumbTintColor='#5B4FE9'
       />
 
        {/* Active Days Sextion  */}
@@ -248,11 +251,10 @@ const styles = StyleSheet.create({
 
   // ── Labels & Inputs ──────────────────────
   label: {
-    fontSize: 11,
+    fontSize: 14,
     color: '#fff',
-    marginTop: 24,
+    marginTop: 8,
     marginBottom: 8,
-    textTransform: 'uppercase',
     letterSpacing: 0.8,
   },
   input: {
@@ -316,7 +318,8 @@ const styles = StyleSheet.create({
   },
   slider: {
     width: '100%',
-    height: 40,
+    height: 55,
+    marginVertical:12
   },
 
   // ── Day Selector ─────────────────────────

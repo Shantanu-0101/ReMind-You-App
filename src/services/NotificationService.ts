@@ -83,6 +83,7 @@ export const scheduleReminder = async (reminder: Reminder): Promise<Reminder> =>
                     channelId: channelId,
                     importance: reminder.sound || reminder.vibration ? AndroidImportance.HIGH : AndroidImportance.DEFAULT,
                     pressAction: {id: 'default'},
+                    smallIcon: 'ic_notification',
                 },
             },
             {

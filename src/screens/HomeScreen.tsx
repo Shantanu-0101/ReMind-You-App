@@ -79,6 +79,7 @@ export default function HomeScreen() {
                 body: reminder.text,
                 android: {
                   channelId: channelId,
+                  smallIcon: 'ic_notification',
                 },
               });
             },

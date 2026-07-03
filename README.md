@@ -1,97 +1,82 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+ReMind You 🔔
+A minimal, focused Android reminder app built with React Native. Set recurring reminders that fire throughout the day — with full control over timing, frequency, active days, sound, and vibration.
 
-# Getting Started
+Features
+📝 Custom Reminder Text — Write any message up to 100 characters
+🕐 Time Window — Set a start and end time for when notifications should fire
+🔁 Frequency Control — Choose how many reminders to receive per day (5–100)
+📅 Day Selector — Pick which days of the week each reminder is active
+🔔 Sound & Vibration Toggles — Enable or disable sound and vibration independently
+🧪 Test Notification — Send a live test notification right after creating a reminder
+✏️ Edit & Delete — Update or remove any reminder at any time
+💾 Persistent Storage — Reminders survive app restarts via AsyncStorage
+📵 Active/Inactive Toggle — Pause a reminder without deleting it
+🔕 Smart Channels — Four Android notification channels (Sound+Vibration, Sound Only, Vibration Only, Silent)
+Screenshots
+Add your screenshots here
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+Tech Stack
+Technology	Purpose
+React Native 0.86	Core framework
+TypeScript	Type safety
+React Navigation	Screen routing
+Notifee	Scheduled notifications & channels
+AsyncStorage	Local data persistence
+React Native Background Fetch	Daily rescheduling
+React Native Vector Icons	UI icons
+UUID	Unique reminder IDs
+Project Structure
 
-## Step 1: Start Metro
+src/
+├── screens/
+│   ├── HomeScreen.tsx          # Reminder list view
+│   ├── CreateReminderScreen.tsx # New reminder form
+│   └── EditReminderScreen.tsx  # Edit / delete reminder
+├── components/
+│   └── ReminderCard.tsx        # Individual reminder list item
+├── services/
+│   ├── NotificationService.ts  # Schedule, cancel & reschedule notifications
+│   └── StorageService.ts       # AsyncStorage CRUD operations
+├── navigation/
+│   └── AppNavigator.tsx        # Stack navigator setup
+├── utils/
+│   └── timeUtils.ts            # Time generation & day-matching helpers
+├── types/
+│   └── index.ts                # Shared TypeScript types
+└── App.tsx                     # App entry point
+Getting Started
+Prerequisites
+Node.js >= 22.11.0
+React Native CLI environment set up (guide)
+Android Studio with an emulator or a physical Android device
+Installation
+bash
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
+# Clone the repository
+git clone https://github.com/Shantanu-0101/ReMindYou-App.git
+cd ReMindYou-App
+# Install dependencies
+npm install
+# Start the Metro bundler
 npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+# Run on Android
 npm run android
+How It Works
+Creating a reminder — Enter text, set a start/end time window, choose frequency and active days, and configure sound/vibration preferences. Notifications are scheduled immediately on save.
 
-# OR using Yarn
-yarn android
-```
+Notification scheduling — The app generates random timestamps within your chosen time window and schedules each one via Notifee's timestamp triggers. Notifications are spread across the day to keep reminders feeling organic rather than mechanical.
 
-### iOS
+Rescheduling — Every time the Home screen gains focus, all active reminders are rescheduled. This ensures reminders continue working day after day without any manual intervention.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+Notification channels — Four Android channels are created to honour your sound and vibration preferences at the OS level, respecting Android's notification system properly.
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Feedback & Support
+Found a bug or have a suggestion? Email: 
+shantanupanchal.dev@gmail.com
 
-```sh
-bundle install
-```
+You can also tap the 💬 icon inside the app to copy the email address directly to your clipboard.
 
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+License
+This project is open source and available under the 
+MIT License
+.

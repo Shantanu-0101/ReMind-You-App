@@ -1,4 +1,4 @@
-# ReMind You 🔔
+# ReMind  You 🔔
 
 A minimal, focused Android reminder app built with **React Native**. Set recurring reminders that fire throughout the day — with full control over timing, frequency, active days, sounds, and vibrations.
 

@@ -119,6 +119,7 @@ dependencies {
 }
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+apply plugin: "com.google.gms.google-services" 
 
 configurations.all {
     resolutionStrategy {
@@ -129,3 +130,4 @@ configurations.all {
     exclude group: 'com.android.support', module: 'support-v4'
     exclude group: 'com.android.support', module: 'support-annotations'
 }
+

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "722189699194",
+    "project_id": "remind-you-965f5",
+    "storage_bucket": "remind-you-965f5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722189699194:android:3e2893843ea8ffad7e93c3",
+        "android_client_info": {
+          "package_name": "com.remindyouapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzurO6rQXpTPbk6QlkVTVkh2AIAFjYBtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

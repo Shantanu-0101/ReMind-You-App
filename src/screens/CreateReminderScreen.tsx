@@ -187,7 +187,7 @@ const CreateReminderScreen = () => {
         ))}
       </View>
 
-      {/* Viration and Sound Toggles */}
+      {/* Vibration and Sound Toggles */}
 
       <View style={styles.toggleRow}>
         <Text style={styles.toggleLabel} >Vibration</Text>

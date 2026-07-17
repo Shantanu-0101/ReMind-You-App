@@ -4,7 +4,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ---
 
-## Features
+## Features:
 
 - 📝 **Custom Reminder Text** — Write any message up to 100 characters
 - 🕐 **Time Window** — Set a start and end time for when notifications should fire
@@ -26,7 +26,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ---
 
-## Tech Stack
+## Tech Stack:
 
 | Technology | Purpose |
 |---|---|

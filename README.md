@@ -41,7 +41,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ---
 
-## Project Structure
+## Project Structure:
 
 ```
 src/

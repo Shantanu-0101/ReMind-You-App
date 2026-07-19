@@ -104,7 +104,7 @@ npm run android
 
 ---
 
-## Feedback & Support
+## Feedback & Support:
 
 Found a bug or have a suggestion? Email: **shantanupanchal.dev@gmail.com**
 

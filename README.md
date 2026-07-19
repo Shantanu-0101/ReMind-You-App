@@ -65,7 +65,7 @@ src/
 
 ---
 
-## Getting Started
+## Getting Started:
 
 ### Prerequisites
 
@@ -73,7 +73,7 @@ src/
 - React Native CLI environment set up ([guide](https://reactnative.dev/docs/environment-setup))
 - Android Studio with an emulator or a physical Android device
 
-### Installation
+### Installation:
 
 ```bash
 # Clone the repository
@@ -92,7 +92,7 @@ npm run android
 
 ---
 
-## How It Works
+## How It Works:
 
 1. **Creating a reminder** — Enter text, set a start/end time window, choose frequency and active days, and configure sound/vibration preferences. Notifications are scheduled immediately on save.
 

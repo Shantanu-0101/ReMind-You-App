@@ -1,10 +1,10 @@
-# ReMindYou 🔔
+# Re-Mind You 
 
 A minimal, focused Android reminder app built with **React Native**. Set recurring reminders that fire throughout the day — with full control over timing, frequency, active days, sound, and vibration.
 
 ---
 
-## Features
+## Features:
 
 - 📝 **Custom Reminder Text** — Write any message up to 100 characters
 - 🕐 **Time Window** — Set a start and end time for when notifications should fire
@@ -21,11 +21,12 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ## Screenshots
 
-> _Add your screenshots here_
+<img width="1080" height="1920" alt="1" src="https://github.com/user-attachments/assets/8f7bce48-2f3f-4f26-866a-aa1a12123b3a" />
+
 
 ---
 
-## Tech Stack
+## Tech Stack:
 
 | Technology | Purpose |
 |---|---|
@@ -40,7 +41,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ---
 
-## Project Structure
+## Project Structure:
 
 ```
 src/
@@ -64,15 +65,15 @@ src/
 
 ---
 
-## Getting Started
+## Getting Started:
 
-### Prerequisites
+### Prerequisites:
 
 - Node.js >= 22.11.0
 - React Native CLI environment set up ([guide](https://reactnative.dev/docs/environment-setup))
 - Android Studio with an emulator or a physical Android device
 
-### Installation
+### Installation:
 
 ```bash
 # Clone the repository
@@ -91,7 +92,7 @@ npm run android
 
 ---
 
-## How It Works
+## How It Works:
 
 1. **Creating a reminder** — Enter text, set a start/end time window, choose frequency and active days, and configure sound/vibration preferences. Notifications are scheduled immediately on save.
 
@@ -103,7 +104,7 @@ npm run android
 
 ---
 
-## Feedback & Support
+## Feedback & Support:
 
 Found a bug or have a suggestion? Email: **shantanupanchal.dev@gmail.com**
 
@@ -111,6 +112,6 @@ You can also tap the 💬 icon inside the app to copy the email address directly
 
 ---
 
-## License
+## License:
 
 This project is open source and available under the [MIT License](LICENSE).

@@ -67,7 +67,7 @@ src/
 
 ## Getting Started:
 
-### Prerequisites
+### Prerequisites:
 
 - Node.js >= 22.11.0
 - React Native CLI environment set up ([guide](https://reactnative.dev/docs/environment-setup))

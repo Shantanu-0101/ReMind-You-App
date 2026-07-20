@@ -1,4 +1,4 @@
-package com.remindyouapp
+package com.shantanupanchal.remindyou
 
 import android.app.Application
 import com.facebook.react.PackageList

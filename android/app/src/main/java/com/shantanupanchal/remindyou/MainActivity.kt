@@ -1,4 +1,4 @@
-package com.remindyouapp
+package com.shantanupanchal.remindyou
 
 import android.os.Bundle
 import org.devio.rn.splashscreen.SplashScreen

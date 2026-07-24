@@ -19,7 +19,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ---
 
-## Screenshots
+## Screenshots:
 
 <img width="1080" height="1920" alt="1" src="https://github.com/user-attachments/assets/8f7bce48-2f3f-4f26-866a-aa1a12123b3a" />
 

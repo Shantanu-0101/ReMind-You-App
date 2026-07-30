@@ -6,7 +6,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 
 ## Features:
 
-- 📝 **Custom Reminder Text** — Write any message up to 100 characters
+- 📝 **Custom Reminder Text** — Write any message up to 100 characters.
 - 🕐 **Time Window** — Set a start and end time for when notifications should fire
 - 🔁 **Frequency Control** — Choose how many reminders to receive per day (5–100)
 - 📅 **Day Selector** — Pick which days of the week each reminder is active
@@ -14,7 +14,7 @@ A minimal, focused Android reminder app built with **React Native**. Set recurri
 - 🧪 **Test Notification** — Send a live test notification right after creating a reminder
 - ✏️ **Edit & Delete** — Update or remove any reminder at any time
 - 💾 **Persistent Storage** — Reminders survive app restarts via AsyncStorage
-- 📵 **Active/Inactive Toggle** — Pause a reminder without deleting it
+- 📵 **Active/Inactive Toggle** — Pause a reminder without deleting it.
 - 🔕 **Smart Channels** — Four Android notification channels (Sound+Vibration, Sound Only, Vibration Only, Silent)
 
 ---

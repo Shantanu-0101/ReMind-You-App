@@ -190,7 +190,7 @@ const EditReminderScreen = () => {
         <TimeRow label="Ending at:"   time={endTime}   setTime={setEndTime} />
     
         {/* Frequency Bar */}
-          <Text style={styles.label}>Selected Frequency: {frequency} </Text>
+          <Text style={styles.label}>Reminders Per Day: {frequency} </Text>
           <Slider
             style={{ height: 40 }}
             minimumValue={5}

@@ -152,7 +152,7 @@ const CreateReminderScreen = () => {
     <TimeRow label="Ending at:"   time={endTime}   setTime={setEndTime} />
 
     {/* Frequency Bar */}
-      <Text style={styles.label}>Reminders per Day: {frequency} </Text>
+      <Text style={styles.label}>Reminders Per Day: {frequency} </Text>
       <Slider
         style={{ height: 44 }}
         minimumValue={5}

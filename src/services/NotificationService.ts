@@ -47,14 +47,16 @@ export const createChannel = async (): Promise<void> => {
 export const scheduleReminder = async (reminder: Reminder): Promise<Reminder> => {
 
     if (!reminder.isActive) return reminder
-    if (!isTodayActive(reminder.activeDays)) return reminder
 
     await cancelReminder(reminder)
 
+    // Schedule for the next 7 days
     const times = generateRandomTimes(
         reminder.startTime,
         reminder.endTime,
-        reminder.frequency
+        reminder.frequency,
+        reminder.activeDays,
+        7 
     )
 
     const now = new Date()

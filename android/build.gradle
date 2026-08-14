@@ -20,3 +20,17 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+subprojects {
+    buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+        configurations.all {
+            resolutionStrategy {
+                force "com.android.tools.build:gradle:8.3.0"
+            }
+        }
+    }
+}

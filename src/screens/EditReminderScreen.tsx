@@ -1,5 +1,6 @@
 import {Alert, TouchableOpacity} from 'react-native'
 import { View, Text, TextInput, StatusBar, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { v4 as uuidv4 } from 'uuid'
@@ -203,27 +204,33 @@ const EditReminderScreen = () => {
             thumbTintColor='#5B4FE9'
           />
 
-        {/* Active Days */}
-          <Text style={styles.label}>Active Days</Text>
-          <View style={styles.daysRow}>
-            {DAYS.map((day, index) => (
-                <TouchableOpacity
-                key={index}
-                onPress={() => toggleDay(index)}
-                style={[
-                    styles.dayButton,
-                    activeDays.includes(index) && styles.dayButtonActive
-                ]}
-                >
-                    <Text style={[
-                        styles.dayText,
-                        activeDays.includes(index) && styles.dayTextActive
-                    ]}>
-                        {day}
-                    </Text>
-                </TouchableOpacity>
-            ))}
-          </View>
+        {/* Active Days Sextion  */}
+        <Text style={styles.label}>Which days should this reminder be sent?</Text>
+        <View style={styles.daysRow}>
+          {DAYS.map((day, index) => (
+            <View key={index} style={{ alignItems: 'center' }}>
+              <TouchableOpacity
+              onPress={() => toggleDay(index)}
+              style={[
+                  styles.dayButton,
+                  activeDays.includes(index) && styles.dayButtonActive
+              ]}
+              >
+                  <Text style={[
+                      styles.dayText,
+                      activeDays.includes(index) && styles.dayTextActive
+                  ]}>
+                      {day}
+                  </Text>
+              </TouchableOpacity>
+  
+            {activeDays.includes(index)
+            ? <Icon name="check" size={12} color='#5B4FE9' style={{ marginTop:4 }}/>
+            : <View style={{ height: 16 }}/>
+            }
+        </View>
+      ))}
+      </View>
     
           {/* Viration and Sound Toggles */}
     
@@ -253,7 +260,7 @@ const EditReminderScreen = () => {
         <Text style={styles.saveButtonText}>Save</Text>
     </TouchableOpacity>
 
-    {/* Cance reminder button */}
+    {/* Cancel reminder button */}
     <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
         <Text style={styles.deleteButtonText}>Delete Reminder</Text>
     </TouchableOpacity>
@@ -267,7 +274,7 @@ export default EditReminderScreen
 
 const styles = StyleSheet.create({
 
-  // ── Layout ──────────────────────────────
+  // Layout 
   screen: {
     flex: 1,
     backgroundColor: '#242436',
@@ -277,7 +284,7 @@ const styles = StyleSheet.create({
     paddingBottom: 48,
   },
 
-  // ── Header ──────────────────────────────
+  // Header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -293,7 +300,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // ── Labels & Inputs ──────────────────────
+  // Labels & Inputs
   label: {
     fontSize: 14,
     color: '#fff',
@@ -313,7 +320,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
 
-  // ── Time Rows ────────────────────────────
+  //  Time Rows 
   timeRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -352,7 +359,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
 
-  // ── Slider ───────────────────────────────
+  // Slider
   sliderLabel: {
     fontSize: 16,
     color: '#fff',
@@ -366,11 +373,12 @@ const styles = StyleSheet.create({
     marginVertical:12
   },
 
-  // ── Day Selector ─────────────────────────
+  // Day Selector
   daysRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
+    alignItems: 'flex-start',
   },
   dayButton: {
     width: 40,
@@ -394,7 +402,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // ── Toggles ──────────────────────────────
+  // Toggles
   toggleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -409,7 +417,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // ── Buttons ──────────────────────────────
+  // Buttons
   saveButton: {
     backgroundColor: '#5B4FE9',
     padding: 16,

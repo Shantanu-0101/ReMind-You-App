@@ -9,6 +9,7 @@ import { Reminder } from '../types'
 import Slider from '@react-native-community/slider';
 import { ScrollView, Switch } from 'react-native'
 import { timeToMinutes } from '../utils/timeUtils'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 const CreateReminderScreen = () => {
@@ -169,8 +170,8 @@ const CreateReminderScreen = () => {
       <Text style={styles.label}>Which days should this reminder be sent?</Text>
       <View style={styles.daysRow}>
         {DAYS.map((day, index) => (
+          <View key={index} style={{ alignItems: 'center' }}>
             <TouchableOpacity
-            key={index}
             onPress={() => toggleDay(index)}
             style={[
                 styles.dayButton,
@@ -184,8 +185,14 @@ const CreateReminderScreen = () => {
                     {day}
                 </Text>
             </TouchableOpacity>
-        ))}
+
+            {activeDays.includes(index)
+            ? <Icon name="check" size={12} color='#5B4FE9' style={{ marginTop:4 }}/>
+            : <View style={{ height: 16 }}/>
+            }
       </View>
+    ))}
+    </View>
 
       {/* Vibration and Sound Toggles */}
 
@@ -223,7 +230,7 @@ export default CreateReminderScreen
 
 const styles = StyleSheet.create({
 
-  // ── Layout ──────────────────────────────
+  // Layout 
   screen: {
     flex: 1,
     backgroundColor: '#242436',
@@ -233,7 +240,7 @@ const styles = StyleSheet.create({
     paddingBottom: 48,
   },
 
-  // ── Header ──────────────────────────────
+  // Header
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -249,7 +256,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // ── Labels & Inputs ──────────────────────
+  // Labels & Inputs
   label: {
     fontSize: 14,
     color: '#fff',
@@ -269,7 +276,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
 
-  // ── Time Rows ────────────────────────────
+  //  Time Rows
   timeRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -308,7 +315,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
 
-  // ── Slider ───────────────────────────────
+  // Slider
   sliderLabel: {
     fontSize: 16,
     color: '#fff',
@@ -322,11 +329,12 @@ const styles = StyleSheet.create({
     marginVertical:12
   },
 
-  // ── Day Selector ─────────────────────────
+  // Day Selector
   daysRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
+    alignItems: 'flex-start',
   },
   dayButton: {
     width: 40,
@@ -350,7 +358,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  // ── Toggles ──────────────────────────────
+  //  Toggles
   toggleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -365,7 +373,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // ── Buttons ──────────────────────────────
+  // Buttons 
   saveButton: {
     backgroundColor: '#5B4FE9',
     padding: 16,

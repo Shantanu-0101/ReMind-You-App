@@ -28,7 +28,9 @@ export const minutesToDate = (minutes: number): Date => {
 export const generateRandomTimes = (
     startTime: string,
     endTime: string,
-    frequency: number
+    frequency: number,
+    activeDays: number[] = [0,1,2,3,4,5,6],
+    daysToSchedule: number = 7
 ): Date[] => {
 
     const startDate = timeToMinutes(startTime)
@@ -38,19 +40,40 @@ export const generateRandomTimes = (
     const range = endMinutes - startMinutes
 
     // Cap frequency to available range
-    const cappedFrequency = Math.min(frequency, range)
+    const cappedFrequency = Math.min(frequency, Math.max(1, range))
+    const chunkDuration = Math.floor(range / cappedFrequency)
 
-    const times = new Set<number>()
+    const baseToday = new Date()
+    baseToday.setHours(0, 0, 0, 0)
 
-    while (times.size < cappedFrequency) {
-        const randomMinute = Math.floor(Math.random() * range ) + startMinutes
-        times.add(randomMinute)
+    const allTimes: Date[] = []
 
+    for (let dayOffset = 0; dayOffset < daysToSchedule; dayOffset++) {
+        const targetDate = new Date(baseToday)
+        targetDate.setDate(targetDate.getDate() + dayOffset)
+        
+        if (activeDays.includes(targetDate.getDay())) {
+            const timesForDay = new Set<number>()
+            
+            // Distribute randomly across chunks
+            for (let i = 0; i < cappedFrequency; i++) {
+                const chunkStart = startMinutes + (i * chunkDuration)
+                const randomMinuteInChunk = chunkStart + Math.floor(Math.random() * chunkDuration)
+                timesForDay.add(randomMinuteInChunk)
+            }
+            
+            Array.from(timesForDay).forEach(minutes => {
+                const hours = Math.floor(minutes / 60)
+                const remaining = minutes % 60
+                
+                const finalDate = new Date(targetDate)
+                finalDate.setHours(hours, remaining, 0, 0)
+                allTimes.push(finalDate)
+            })
+        }
     }
 
-    return Array.from(times)
-    .sort((a,b) => a-b)
-    .map(minutesToDate)
+    return allTimes.sort((a,b) => a.getTime() - b.getTime())
 }
 
 export const isTodayActive = (activeDays: number[]): boolean => {

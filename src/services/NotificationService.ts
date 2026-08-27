@@ -50,13 +50,20 @@ export const scheduleReminder = async (reminder: Reminder): Promise<Reminder> =>
 
     await cancelReminder(reminder)
 
-    // Schedule for the next 7 days
+    // Fetch all already-scheduled notification timestamps to avoid time collisions
+    const pendingTriggers = await notifee.getTriggerNotifications()
+    const excludedTimestamps: number[] = pendingTriggers
+        .filter(t => t.trigger.type === TriggerType.TIMESTAMP)
+        .map(t => (t.trigger as any).timestamp as number)
+
+    // Schedule for the next 7 days, avoiding collisions with existing reminders
     const times = generateRandomTimes(
         reminder.startTime,
         reminder.endTime,
         reminder.frequency,
         reminder.activeDays,
-        7 
+        7,
+        excludedTimestamps
     )
 
     const now = new Date()

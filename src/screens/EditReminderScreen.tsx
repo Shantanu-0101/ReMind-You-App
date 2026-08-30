@@ -14,16 +14,19 @@ import { useRoute } from '@react-navigation/native'
 import { getReminders, updateReminder, deleteReminder } from '../services/StorageService'
 import { cancelReminder } from '../services/NotificationService'
 
+const GLOBAL_LIMIT = 100
+
 
 const EditReminderScreen = () => {
 
     const [text, setText] = useState('')
     const [startTime, setStartTime] = useState('08:00')
     const [endTime, setEndTime] = useState('22:00')
-    const [frequency, setFrequency] = useState(5)
+    const [frequency, setFrequency] = useState(1)
     const [activeDays, setActiveDays] = useState<number[]>([0,1,2,3,4,5,6])
     const [vibration, setVibration] = useState(true)
     const [sound, setSound] = useState(true)
+    const [slotsUsedByOthers, setSlotsUsedByOthers] = useState(0)
 
     const navigation = useNavigation()
 
@@ -44,6 +47,11 @@ const EditReminderScreen = () => {
                 setVibration(found.vibration)
                 setSound(found.sound)
             }
+            // Slots used by all OTHER active reminders (excluding this one)
+            const othersUsed = reminders
+                .filter(r => r.isActive && r.id !== reminderId)
+                .reduce((sum, r) => sum + r.frequency, 0)
+            setSlotsUsedByOthers(othersUsed)
             }
             load()
         }, [reminderId])
@@ -67,6 +75,15 @@ const EditReminderScreen = () => {
         //No active Days Check
         if (activeDays.length === 0) {
             Alert.alert('No Active Days', 'Please select atleast one day')
+            return
+        }
+
+        // Check global slot limit (excluding this reminder's own current slots)
+        if (slotsUsedByOthers + frequency > GLOBAL_LIMIT) {
+            Alert.alert(
+                'Limit Reached',
+                `You only have ${GLOBAL_LIMIT - slotsUsedByOthers} reminder slots available.`
+            )
             return
         }
 
@@ -191,18 +208,24 @@ const EditReminderScreen = () => {
         <TimeRow label="Ending at:"   time={endTime}   setTime={setEndTime} />
     
         {/* Frequency Bar */}
-          <Text style={styles.label}>Reminders Per Day: {frequency} </Text>
-          <Slider
-            style={{ height: 40 }}
-            minimumValue={5}
-            maximumValue={100}
-            step={1}
-            value={frequency}
-            onValueChange={setFrequency}
-            minimumTrackTintColor='#5B4FE9'
-            maximumTrackTintColor='#fff'
-            thumbTintColor='#5B4FE9'
-          />
+          <Text style={styles.label}>
+            Reminders Per Day: {frequency}
+            {'  '}
+            <Text style={styles.slotsLabel}>({Math.max(0, GLOBAL_LIMIT - slotsUsedByOthers - frequency)} slots left)</Text>
+          </Text>
+          <View style={{ paddingHorizontal: 90 }}>
+            <Slider
+              style={{ height: 44, transform: [{ scale: 2.5 }] }}
+              minimumValue={1}
+              maximumValue={Math.max(1, GLOBAL_LIMIT - slotsUsedByOthers)}
+              step={1}
+              value={frequency}
+              onValueChange={setFrequency}
+              minimumTrackTintColor='#5B4FE9'
+              maximumTrackTintColor='#fff'
+              thumbTintColor='#5B4FE9'
+            />
+          </View>
 
         {/* Active Days Sextion  */}
         <Text style={styles.label}>Which days should this reminder be sent?</Text>
@@ -307,6 +330,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
     letterSpacing: 0.8,
+  },
+  slotsLabel: {
+    fontSize: 12,
+    color: '#8a84c9',
+    fontWeight: '400',
   },
   input: {
     backgroundColor: '#242436',

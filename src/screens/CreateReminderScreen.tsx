@@ -1,9 +1,9 @@
 import {Alert, TouchableOpacity} from 'react-native'
 import { View, Text, TextInput, StatusBar, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useCallback } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { v4 as uuidv4 } from 'uuid'
-import { setReminder } from '../services/StorageService'
+import { setReminder, getReminders } from '../services/StorageService'
 import { scheduleReminder } from '../services/NotificationService'
 import { Reminder } from '../types'
 import Slider from '@react-native-community/slider';
@@ -12,17 +12,37 @@ import { timeToMinutes } from '../utils/timeUtils'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
+const GLOBAL_LIMIT = 100
+
 const CreateReminderScreen = () => {
 
     const [text, setText] = useState('')
     const [startTime, setStartTime] = useState('08:00')
     const [endTime, setEndTime] = useState('22:00')
-    const [frequency, setFrequency] = useState(5)
+    const [frequency, setFrequency] = useState(1)
     const [activeDays, setActiveDays] = useState<number[]>([0,1,2,3,4,5,6])
     const [vibration, setVibration] = useState(true)
     const [sound, setSound] = useState(true)
+    const [slotsUsed, setSlotsUsed] = useState(0)
 
     const navigation = useNavigation()
+
+    // Calculate how many frequency slots are already used by other reminders
+    useFocusEffect(
+        useCallback(() => {
+            const loadSlots = async () => {
+                const reminders = await getReminders()
+                const used = reminders
+                    .filter(r => r.isActive)
+                    .reduce((sum, r) => sum + r.frequency, 0)
+                setSlotsUsed(used)
+                // Clamp current frequency to remaining slots
+                const remaining = Math.max(1, GLOBAL_LIMIT - used)
+                setFrequency(prev => Math.min(prev, remaining))
+            }
+            loadSlots()
+        }, [])
+    )
 
     const handleSave = async () => {
 
@@ -41,6 +61,15 @@ const CreateReminderScreen = () => {
         //No active Days Check
         if (activeDays.length === 0) {
             Alert.alert('No Active Days', 'Please select atleast one day')
+            return
+        }
+
+        // Check global slot limit
+        if (slotsUsed + frequency > GLOBAL_LIMIT) {
+            Alert.alert(
+                'Limit Reached',
+                `You only have ${GLOBAL_LIMIT - slotsUsed} reminder slots left.`
+            )
             return
         }
 
@@ -153,18 +182,24 @@ const CreateReminderScreen = () => {
     <TimeRow label="Ending at:"   time={endTime}   setTime={setEndTime} />
 
     {/* Frequency Bar */}
-      <Text style={styles.label}>Reminders Per Day: {frequency} </Text>
-      <Slider
-        style={{ height: 44 }}
-        minimumValue={5}
-        maximumValue={100}
-        step={1}
-        value={frequency}
-        onValueChange={setFrequency}
-        minimumTrackTintColor='#5B4FE9'
-        maximumTrackTintColor='#fff'
-        thumbTintColor='#5B4FE9'
-      />
+      <Text style={styles.label}>
+        Reminders Per Day: {frequency}
+        {'  '}
+        <Text style={styles.slotsLabel}>({Math.max(0, GLOBAL_LIMIT - slotsUsed - frequency)} slots left)</Text>
+      </Text>
+      <View style={{ paddingHorizontal: 90 }}>
+        <Slider
+          style={{ height: 44, transform: [{ scale: 2.5 }] }}
+          minimumValue={1}
+          maximumValue={Math.max(1, GLOBAL_LIMIT - slotsUsed)}
+          step={1}
+          value={frequency}
+          onValueChange={setFrequency}
+          minimumTrackTintColor='#5B4FE9'
+          maximumTrackTintColor='#fff'
+          thumbTintColor='#5B4FE9'
+        />
+      </View>
 
        {/* Active Days Sextion  */}
       <Text style={styles.label}>Which days should this reminder be sent?</Text>
@@ -263,6 +298,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
     letterSpacing: 0.8,
+  },
+  slotsLabel: {
+    fontSize: 12,
+    color: '#8a84c9',
+    fontWeight: '400',
   },
   input: {
     backgroundColor: '#12122a',

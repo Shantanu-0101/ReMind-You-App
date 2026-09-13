@@ -29,9 +29,6 @@ export default function App() {
     useEffect(() => {
         const init = async () => {
             await notifee.requestPermission()
-
-            const reminders = await getReminders()
-            await rescheduleAllReminders(reminders)
             SplashScreen.hide()
         }
         init()

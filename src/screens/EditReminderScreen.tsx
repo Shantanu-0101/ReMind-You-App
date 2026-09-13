@@ -5,14 +5,12 @@ import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { v4 as uuidv4 } from 'uuid'
 import { setReminder } from '../services/StorageService'
-import { scheduleReminder } from '../services/NotificationService'
 import { Reminder } from '../types'
 import Slider from '@react-native-community/slider';
 import { ScrollView, Switch } from 'react-native'
 import { timeToMinutes } from '../utils/timeUtils'
 import { useRoute } from '@react-navigation/native'
 import { getReminders, updateReminder, deleteReminder } from '../services/StorageService'
-import { cancelReminder } from '../services/NotificationService'
 
 const GLOBAL_LIMIT = 100
 
@@ -100,16 +98,11 @@ const EditReminderScreen = () => {
             notificationIds: [],
         }
         await updateReminder(updatedReminder)
-        await cancelReminder(updatedReminder)
-        await scheduleReminder(updatedReminder)
         navigation.goBack()
     }
 
     // Cancel Reminder Function
     const handleDelete = async () => {
-        const reminders = await getReminders()
-        const found = reminders.find(r => r.id === reminderId)
-        if (found) await cancelReminder(found)
         await deleteReminder(reminderId)
         navigation.goBack()
     }

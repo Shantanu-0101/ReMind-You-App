@@ -8,7 +8,7 @@ export type Reminder = {
     vibration: boolean
     sound: boolean
     isActive: boolean
-    notificationIds: string[]
+    notificationIds?: string[]
 }
 
 export type RootStackParamList = {

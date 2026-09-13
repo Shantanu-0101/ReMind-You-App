@@ -4,6 +4,7 @@ import {Reminder} from '../types'
 import {generateRandomTimes, isTodayActive} from '../utils/timeUtils'
 import {deleteReminder, updateReminder} from './StorageService'
 
+
 export const createChannel = async (): Promise<void> => {
 
         //1) Sound ON, Vibration ON
@@ -43,91 +44,94 @@ export const createChannel = async (): Promise<void> => {
         })
 }
 
+let isRescheduling = false;
 
-export const scheduleReminder = async (reminder: Reminder): Promise<Reminder> => {
+export const rescheduleAllReminders = async (reminders: Reminder[]): Promise<void> => {
+    if (isRescheduling) return;
+    isRescheduling = true;
 
-    if (!reminder.isActive) return reminder
+    try {
+        await createChannel()
 
-    await cancelReminder(reminder)
-
-    // Fetch all already-scheduled notification timestamps to avoid time collisions
-    const pendingTriggers = await notifee.getTriggerNotifications()
-    const excludedTimestamps: number[] = pendingTriggers
-        .filter(t => t.trigger.type === TriggerType.TIMESTAMP)
-        .map(t => (t.trigger as any).timestamp as number)
-
-    // Schedule for the next 7 days, avoiding collisions with existing reminders
-    const times = generateRandomTimes(
-        reminder.startTime,
-        reminder.endTime,
-        reminder.frequency,
-        reminder.activeDays,
-        7,
-        excludedTimestamps
-    )
+        // Cancel ALL existing trigger notifications to prevent orphans and race conditions
+        const pendingTriggers = await notifee.getTriggerNotifications()
+        for (const t of pendingTriggers) {
+            if (t.notification?.id) {
+                await notifee.cancelNotification(t.notification.id)
+            }
+        }
 
     const now = new Date()
-    const scheduledIds: string[] = []
+    const MIN_GAP_MINUTES = 5
+    let allScheduled: {time: Date; reminder: Reminder }[] = []
 
-    for (const triggerDate of times) {
-        if (triggerDate <= now) continue
+    // Collect all times across all reminders (7 days forward)
+    for (const reminder of reminders) {
+        if (!reminder.isActive) continue
 
-        const notificationIds = uuidv4()
+        const times = generateRandomTimes(
+            reminder.startTime,
+            reminder.endTime,
+            reminder.frequency,
+            reminder.activeDays,
+            7
+        )
 
-    const getChannelID = (sound:boolean, vibration:boolean) => {
+        for (const time of times) {
+            if (time > now) {
+                allScheduled.push({ time, reminder })
+            }
+        }
+    }
+
+    // sort all notifications by time
+    allScheduled.sort((a,b) => a.time.getTime() - b.time.getTime())
+
+    //enforce minimum gap
+    for (let i = 1; i< allScheduled.length; i++) {
+        const prev = allScheduled[i - 1].time.getTime()
+        const curr = allScheduled[i].time.getTime()
+        const diffMinutes = (curr - prev) / (1000 * 60)
+
+        if (diffMinutes < MIN_GAP_MINUTES) {
+            // push this notification forward
+            const newTime = new Date(prev + MIN_GAP_MINUTES * 60 * 1000)
+            allScheduled[i].time = newTime
+        }
+    }
+
+    const getChannelID = (sound: boolean, vibration: boolean) => {
         if (sound && vibration) return 'reminders-sound-vibe';
         if (sound && !vibration) return 'reminders-sound-only';
         if (!sound && vibration) return 'reminders-vibe-only';
         return 'reminders-silent';
     };
 
-    const channelId = getChannelID(reminder.sound, reminder.vibration);
+    // now schedule everything
+    for (const {time, reminder} of allScheduled){
+        const notificationId = uuidv4()
+        const channelId = getChannelID(reminder.sound, reminder.vibration)
 
         await notifee.createTriggerNotification(
             {
-                id: notificationIds,
+                id: notificationId,
                 title: 'Reminder',
                 body: reminder.text,
+                data: { reminderId: reminder.id },
                 android: {
                     channelId: channelId,
+                    smallIcon: 'ic_notification',
                     importance: reminder.sound || reminder.vibration ? AndroidImportance.HIGH : AndroidImportance.DEFAULT,
                     pressAction: {id: 'default'},
-                    smallIcon: 'ic_notification',
                 },
             },
             {
                 type: TriggerType.TIMESTAMP,
-                timestamp: triggerDate.getTime(),
+                timestamp: time.getTime(),
             }
         )
-
-        scheduledIds.push(notificationIds)
     }
-
-    const updated: Reminder = {...reminder, notificationIds: scheduledIds}
-    await updateReminder(updated)
-
-    return updated
-
-}
-
-
-export const cancelReminder = async (reminder: Reminder): Promise<void> => {
-    if (reminder.notificationIds?.length > 0) {
-        for (const id of reminder.notificationIds) {
-            await notifee.cancelNotification(id)
-        }
+    } finally {
+        isRescheduling = false;
     }
 }
-
-
-export const rescheduleAllReminders = async (reminders: Reminder[]): Promise<void> => {
-    await createChannel()
-
-    for (const reminder of reminders) {
-        if (reminder.isActive) {
-            await scheduleReminder(reminder)
-        }
-    }
-}
-

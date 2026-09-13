@@ -4,7 +4,6 @@ import React, { useState, useCallback } from 'react'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { v4 as uuidv4 } from 'uuid'
 import { setReminder, getReminders } from '../services/StorageService'
-import { scheduleReminder } from '../services/NotificationService'
 import { Reminder } from '../types'
 import Slider from '@react-native-community/slider';
 import { ScrollView, Switch } from 'react-native'
@@ -86,8 +85,7 @@ const CreateReminderScreen = () => {
             notificationIds: [],
         }
         await setReminder(newReminder)
-        await scheduleReminder(newReminder);
-        (navigation.navigate as any)('Home', {testReminder: newReminder});
+        ;(navigation.navigate as any)('Home', {testReminder: newReminder});
     }
 
     {/* Day Selector */}
